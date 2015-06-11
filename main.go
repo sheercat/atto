@@ -1,11 +1,15 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"path"
 )
+
+var PortNumber *string = flag.String("port", "8080", "port number.")
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	dir, err := os.Getwd()
@@ -18,5 +22,5 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", rootHandler)
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":"+*PortNumber, nil))
 }
