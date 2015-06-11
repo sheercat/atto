@@ -21,6 +21,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	flag.Parse()
 	http.HandleFunc("/", rootHandler)
 	log.Fatal(http.ListenAndServe(":"+*PortNumber, nil))
 }
