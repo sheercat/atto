@@ -13,6 +13,8 @@ import (
 )
 
 var portNumber = flag.String("port", "8080", "port number.")
+var basicAuthUser = flag.String("user", "hoge", "basic auth user name")
+var basicAuthPass = flag.String("pass", "hoge", "basic auth user pass")
 
 func uploadForm(w http.ResponseWriter) {
 	fmt.Fprintln(w, `
@@ -53,8 +55,27 @@ func uploadFile(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+func checkAuth(w http.ResponseWriter, r *http.Request) bool {
+	username, password, ok := r.BasicAuth()
+	// log.Println(username, password, ok)
+	if ok == false {
+		return false
+	}
+	return username == *basicAuthUser && password == *basicAuthPass
+}
+
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	// pp.Println(r)
+	if *basicAuthUser != "" && *basicAuthPass != "" {
+		// log.Println(*basicAuthUser)
+		if checkAuth(w, r) == false {
+			w.Header().Set("WWW-Authenticate", `Basic realm="Atto"`)
+			w.WriteHeader(401)
+			w.Write([]byte("401 Unauthorized\n"))
+			return
+		}
+	}
+
 	log.Println(r.Method, r.RequestURI)
 	if r.URL.RawQuery == "upload" {
 		uploadForm(w)
