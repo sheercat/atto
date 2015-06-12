@@ -1,25 +1,23 @@
 # atto
 
-super mini http server. with upload form
-
-## Prerequisites
-
-You will need golang.
-
-## Running
-
-    go run main.go
+super handy http server. with upload form, basic auth.
 
 ## install
 
-    go get me
+    go get github.com/sheercat/atto
 
 ## Getting Started
 
    $ atto
-   then, serve current dir files to default port 8080 (option --port is available).
-   If you set params ?upload to url then serve file upload form. and you can upload file
-   to current dir.
+
+   $ atto --port=9090
+
+   $ atto --user=basic --pass=auth
+
+   then, atto serve current dir files to default port 8080.
+
+   If you designate params '?upload' to url then atto serve html with file upload form.
+   and you can upload file to current dir.
 
 ## License
 
