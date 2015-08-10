@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	// _ "github.com/k0kubun/pp"
+	"github.com/k0kubun/pp"
 	//_ "github.com/motemen/go-loghttp/global"
 	"io"
 	"log"
@@ -15,6 +15,7 @@ import (
 var portNumber = flag.String("port", "8080", "port number.")
 var basicAuthUser = flag.String("user", "", "basic auth user name")
 var basicAuthPass = flag.String("pass", "", "basic auth user pass")
+var debugFlag = flag.Bool("debug", false, "debug")
 
 func uploadForm(w http.ResponseWriter) {
 	fmt.Fprintln(w, `
@@ -65,7 +66,9 @@ func checkAuth(w http.ResponseWriter, r *http.Request) bool {
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
-	// pp.Println(r)
+	if *debugFlag {
+		pp.Println(r)
+	}
 	if *basicAuthUser != "" && *basicAuthPass != "" {
 		log.Println(*basicAuthUser)
 		if checkAuth(w, r) == false {
