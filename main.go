@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+
 	"github.com/k0kubun/pp"
 	//_ "github.com/motemen/go-loghttp/global"
 	"io"
@@ -80,6 +81,10 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println(r.Method, r.RequestURI)
+	if r.URL.RawQuery == "env" {
+		log.Printf("%v", r)
+		return
+	}
 	if r.URL.RawQuery == "upload" {
 		uploadForm(w)
 		return
